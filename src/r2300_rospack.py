@@ -132,12 +132,18 @@ def request_datas():
     response = urllib.request.urlopen(set_f_l)
     response = urllib.request.urlopen(request_handle)
     j = response.read()
-    result = json.loads(j)
+    try:
+        result = json.loads(j)
+    except TypeError:
+        result = json.loads(j.decode('utf-8'))
     if result["error_code"] == 0 and result["error_text"] == 'success':
         handle = result['handle']
         response = urllib.request.urlopen(request_scanoutput+handle)
         j = response.read()
-        result = json.loads(j)
+        try:
+            result = json.loads(j)
+        except TypeError:
+            result = json.loads(j.decode('utf-8'))
         if result["error_code"] == 0 and result["error_text"] == 'success':
             print ('start scanoutput done')
         else:
